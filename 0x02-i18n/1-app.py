@@ -1,30 +1,32 @@
 #!/usr/bin/env python3
-"""
-Creating an i18n application
-"""
-
-from flask import Flask, render_template, request
+""" Route module for the API """
+from flask import Flask, render_template
 from flask_babel import Babel
 
-
 app = Flask(__name__)
-class Config():
-    """Configuration class for babel"""
-
-    LANGUAGES = ["en", "fr"]
-    BABEL_DEFAULT_LOCALE = "en"
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
-
-
-app.config.from_object('1-app.Config')
 babel = Babel(app)
 
 
-@app.route("/")
-def home() -> str:
-    """Home page"""
+class Config(object):
+    """ Available languages class """
+    LANGUAGES = ['en', 'fr']
+    # these are the inherent defaults just btw
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
+
+
+# set the above class object as the configuration for the app
+app.config.from_object('1-app.Config')
+
+
+@app.route('/', methods=['GET'], strict_slashes=False)
+def index() -> str:
+    """ GET /
+    Return:
+      - 1-index.html
+    """
     return render_template('1-index.html')
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port="5000")
